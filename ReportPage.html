@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Sign Up Page</title>
+        <title>Update Health Page</title>
         <link rel="stylesheet" href="cssFiles/signin_up.css">
         <link href="https://fonts.googleapis.com/css?family=Montserrat|Ubuntu" rel="stylesheet"> 
     </head>
@@ -77,18 +77,18 @@
                     console.log(user_contacts);
                     var infected = document.getElementById('check_infected').value;
                     const checked = infected.toLowerCase();
-                    alert(checked);
+                    //alert(checked);
                     fAuth.onAuthStateChanged(function(user){
                         if (user){
                             //alert("Successfully logged in!")
                             userID = user.uid;
-                            console.log(userID);
+                            console.log("Your userID", userID);
                             if (checked == "no"){
                                 fStore.collection("User").doc(userID).update({
                                     infected: false
                                 })
                                 .then(function(){
-                                    //alert("Successfully update no");
+                                    alert("Successfully update no");
                                 });
                                 
                                 fStore.collection("User").get().then(function(querySnapshot){
@@ -98,8 +98,8 @@
                                     });
                                 });
                                 
-                                alert(user_contacts);
-                                window.location.assign("MainPage.html");
+                                alert("Here", user_contacts);
+                                
                             }
                             else{
                                 fStore.collection("User").doc(userID).update({
@@ -107,7 +107,6 @@
                                 })
                                 .then(function(){
                                     //alert("Successfully update yes");
-                                    window.location.assign("MainPage.html");
                                 });
                                 
                                 /*fStore.collection("User").get().then(function(querySnapshot){
