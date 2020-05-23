@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="mainpages.css">
+    <title>Hackateam</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Ubuntu" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+      
+    <style>
+        body{
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #1a1a1a;
+            text-align: left;
+            height: 100%;
+            background-color: #fff;
+        }
+          /* Always set the map height explicitly to define the size of the div
+           * element that contains the map. */
+          #map {
+            height: 90%;
+          }
+          /* Optional: Makes the sample page fill the window. */
+          html{
+            height: 100%;
+            line-height: 1.15;
+            font-family: sans-serif;
+          }
+    </style>
+  </head>
+<body>
+    <section>
+        <div>
+            <div class='navbar'>
+                <div class='logo'>
+                HACKAMAP |
+                </div>           
+                <div class='navbar-item'>
+                    <nav>
+                        <ul>
+                            <li><a href="MainPage.html">Home</a></li>
+                            <li><a href="ReportPage.html">Report Status</a></li>
+                            <li><a href="Map.html">Track Me</a></li>
+                            <li><a href='map3.html'>Location Check</a></li>
+                            <li><a href="#" onclick="SignOut()">Sign Out</a></li> 
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+      
+    <div id="map" class="map"></div>
+    <!--<div> <button type="button" onclick="Test()">Click me</button></div>  -->
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-analytics.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-firestore.js"></script>
+    
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyBpjvRC9EGrbJkBv3UWt6AMhdogN38AKQc",
+            authDomain: "hackthemap-e1614.firebaseapp.com",
+            databaseURL: "https://hackthemap-e1614.firebaseio.com",
+            projectId: "hackthemap-e1614",
+            storageBucket: "hackthemap-e1614.appspot.com",
+            messagingSenderId: "789330500819",
+            appId: "1:789330500819:web:efd01b3404a9ad5ee68826",
+            measurementId: "G-TQ60F3VFN5"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        
+        const fAuth = firebase.auth();
+        const fStore = firebase.firestore();
+        var watchID;
+        var geoLoc;
+        var userID;
+        
+        function initMap() {
+            var map;
+            var marker;
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: 22, lng: 105},
+                    zoom: 15
+            });
+
+            var marker = new google.maps.Marker({
+                map,
+                position: {lat: 22, lng: 105},
+                title: "Your Location"
+            });
+
+            if(navigator.geolocation){
+                var user_list = [];
+                // timeout at 3000 milliseconds (3 seconds)
+                var options = {timeout:3000, enableHighAccuracy: true};
+                geoLoc = navigator.geolocation;
+                watchID = geoLoc.watchPosition(function showLocation(position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+                    console.log("Latitude : " + latitude + " Longitude: " + longitude);
+                    marker.setPosition({lat: latitude, lng: longitude});
+                    map.setCenter({lat: latitude, lng: longitude});
+                    
+                    firebase.auth().onAuthStateChanged((user) => {
+                        if (user) {
+                            console.log(user.uid);
+                            userID = user.uid;
+                            
+                            //Update location (latitude, longitude in FireStore)
+                            fStore.collection("User").doc(userID).update({
+                                latitude: latitude,
+                                longitude: longitude
+                            })
+
+                            //Get all the users in the firebase
+                            fStore.collection("User").get().then(function(querySnapshot) {
+                                querySnapshot.forEach(function(doc) {
+                                    if (doc.id != userID){
+                                        // doc.data() is never undefined for query doc snapshots
+                                        user_list.push(doc.data());
+                                    }
+                                });
+                            })
+
+                            for (var i = 0; i < user_list.length; i++){
+                                //Get each user from the firebase
+
+                                console.log(user_list[i])
+                                var user_data = user_list[i];
+                                //Get information
+                                var date = new Date().toString();
+                                var fname_contact = user_data.first_name;
+                                var lname_contact = user_data.last_name;
+                                var contactID = user_data.userID;
+                                var latitude_1 = user_data.latitude;
+                                console.log(user_data.first_name + " " + latitude_1);
+                                var longitude_1 = user_data.longitude;
+                                console.log(user_data.first_name + " " + longitude_1);
+                                //console.log(meansure(latitude, longitude, latitude_1, longitude_1));
+                                //Comparing distance between two users.
+                                if (measure(latitude, longitude, latitude_1, longitude_1)<10){
+                                    console.log("You are less than 2 meters away with this person " + user_data.first_name);
+                                    fStore.collection("User").doc(userID).collection("contact").doc(contactID).set({
+                                        latitude: latitude_1,
+                                        longitude: longitude_1,
+                                        first_name: fname_contact,
+                                        last_name: lname_contact,
+                                        date: date
+                                    })
+                                }
+                                else{
+                                    var distance_meter = measure(latitude, longitude, latitude_1, longitude_1);
+                                    console.log("You are safe " + distance_meter + " meters.");
+                                }
+                            }
+                                } else {
+                                    console.log("Cannot get userid")
+                                }
+                    });
+                    
+                 }, errorHandler, options);
+            }
+        }
+
+        function errorHandler(err) {
+            console.log("Error");
+        }
+        
+        function measure(lat1, lon1, lat2, lon2){
+            // generally used geo measurement function
+            var R = 6378.137; // Radius of earth in KM
+            var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
+            var dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
+            var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon/2) * Math.sin(dLon/2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            var d = R * c;
+            return d * 1000; // meters
+        }
+        
+        function SignOut(){
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    console.log(user.uid);
+                    var userID = user.uid;
+                    
+                    firebase.auth().signOut().then(function(){
+                        firebase.firestore().collection("User").doc(userID).update({
+                            latitude: null,
+                            longitude: null
+                        })
+                        window.location.assign("SignInPage.html");
+                    })
+                } else {
+                    console.log("Cannot get userid")
+                }
+            });
+        }
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpjvRC9EGrbJkBv3UWt6AMhdogN38AKQc&callback=initMap"
+    async defer></script>
+  </body>
+</html>

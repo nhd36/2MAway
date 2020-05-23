@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="cssFiles/mainpages.css">
+    <title>Hackateam</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Ubuntu" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+    <style>
+        #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #description {
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+      }
+
+      #infowindow-content .title {
+        font-weight: bold;
+      }
+
+      #infowindow-content {
+        display: none;
+      }
+
+      #map #infowindow-content {
+        display: inline;
+      }
+
+      .pac-card {
+        margin: 10px 10px 0 0;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        background-color: #fff;
+        font-family: Roboto;
+      }
+
+      #pac-container {
+        padding-bottom: 12px;
+        margin-right: 12px;
+      }
+
+      .pac-controls {
+        display: inline-block;
+        padding: 5px 11px;
+      }
+
+      .pac-controls label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }
+
+      #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 20px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 10px 0 20px;
+        text-overflow: ellipsis;
+        width: 400px;
+      }
+
+      #pac-input:focus {
+        border-color: #4d90fe;
+      }
+
+      #title {
+        color: yellow;
+        background-color: deeppink;
+        font-size: 25px;
+        font-weight: 500;
+        padding: 6px 12px;
+        font-family: montserrat;
+        text-align: center;
+      }
+      #target {
+        width: 345px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <section>
+        <div>
+            <div class='navbar'>
+                <div class='logo'>
+                HACKAMAP |
+                </div>           
+                <div class='navbar-item'>
+                    <nav>
+                        <ul>
+                            <li><a href="MainPage.html">Home</a></li>
+                            <li><a href="ReportPage.html">Report Status</a></li>
+                            <li><a href="TrackMe.html">Track Me</a></li>
+                            <li><a href='TrackLocation.html'>Location Check</a></li>
+                            <li><a href="SignInPage.html" onclick="SignOut()">Sign Out</a></li> 
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="title">
+          Social Distancing Search
+    </div>
+    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+    <div id="map"></div>
+      
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+             https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
+
+        <script>
+          // Your web app's Firebase configuration
+          var firebaseConfig = {
+            apiKey: "AIzaSyB694vlhD5k2WJ0Nequs30AAr2R9n8BRB8",
+            authDomain: "hackamap-7c8ee.firebaseapp.com",
+            databaseURL: "https://hackamap-7c8ee.firebaseio.com",
+            projectId: "hackamap-7c8ee",
+            storageBucket: "hackamap-7c8ee.appspot.com",
+            messagingSenderId: "483911421310",
+            appId: "1:483911421310:web:df3ea271a8a0f7ad6ab72f",
+            measurementId: "G-GBYD2X2JH9"
+          };
+          // Initialize Firebase
+          firebase.initializeApp(firebaseConfig);
+          firebase.analytics();
+            const fAuth = firebase.auth();
+            const fStore = firebase.firestore();
+            var geoLoc;
+            var userID;
+
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    console.log("Here is userID " + user.uid);
+                    userID = user.uid;
+                } else {
+                    console.log("Cannot get userid");
+                    alert("Please log in again");
+                    window.location.assign("SignIn.html")
+                }
+            });
+            /*
+            function SignOut(){
+                firebase.auth().onAuthStateChanged((user) => {
+                    if (user) {
+                        console.log(user.uid);
+                        var userID = user.uid;
+
+                        firebase.auth().signOut().then(function(){
+                            fStore.collection("User").doc(userID).update({
+                                latitude: 0,
+                                longitude: 0
+                            })
+                            window.location.assign("SignInPage.html");
+                        });
+                    } else {
+                        console.log("Cannot get userid")
+                    }
+                });
+            }*/
+
+            function measure(lat1, lon1, lat2, lon2){  
+                var R = 3958.8; // Radius of the Earth in miles
+                var rlat1 = lat1 * (Math.PI/180); // Convert degrees to radians
+                var rlat2 = lat2 * (Math.PI/180); // Convert degrees to radians
+                var difflat = rlat2-rlat1; // Radian difference (latitudes)
+                var difflon = (lon2 - lon1) * (Math.PI/180); // Radian difference (longitudes)
+
+                var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
+                var e = d * 1609; //convert miles to meter
+                return e;
+            }
+
+            function initAutocomplete() {
+                var map = new google.maps.Map(document.getElementById('map'), {
+                  center: {lat: -33.8688, lng: 151.2195},
+                  zoom: 13,
+                  mapTypeId: 'roadmap'
+                });
+
+                // Create the search box and link it to the UI element.
+                var input = document.getElementById('pac-input');
+                var searchBox = new google.maps.places.SearchBox(input);
+                map.controls[google.maps.ControlPosition.TOP_RIGHT].push(input);
+
+                // Bias the SearchBox results towards current map's viewport.
+                map.addListener('bounds_changed', function() {
+                  searchBox.setBounds(map.getBounds());
+                });
+
+                var markers = [];
+                var city_circles = [];
+                var user_markers = [];
+                // Listen for the event fired when the user selects a prediction and retrieve
+                // more details for that place.
+                searchBox.addListener('places_changed', function() {
+                    user_around = []
+                  var places = searchBox.getPlaces();
+
+                  if (places.length == 0) {
+                    return;
+                  }
+
+                  // Clear out the old markers.
+                  markers.forEach(function(marker) {
+                    marker.setMap(null);
+                  });
+                  markers = [];
+
+                    city_circles.forEach(function(city_circle){
+                        city_circle.setMap(null);
+                    });
+
+                    city_circles = [];
+
+                    user_markers.forEach(function(user_marker){
+                        user_marker.setMap(null);
+                    });
+
+                    user_markers = [];
+                  // For each place, get the icon, name and location.
+                  var bounds = new google.maps.LatLngBounds();
+                  places.forEach(function(place) {
+                    if (!place.geometry) {
+                      console.log("Returned place contains no geometry");
+                      return;
+                    }
+                    var icon = {
+                      url: place.icon,
+                      size: new google.maps.Size(71, 71),
+                      origin: new google.maps.Point(0, 0),
+                      anchor: new google.maps.Point(17, 34),
+                      scaledSize: new google.maps.Size(25, 25)
+                    };
+
+                    // Create a marker for each place.
+                    markers.push(new google.maps.Marker({
+                      map: map,
+                      icon: icon,
+                      title: place.name,
+                      position: place.geometry.location
+                    }));
+
+                    //Draw Circle
+                    city_circles.push(new google.maps.Circle({
+                      strokeColor: '#FF0000',
+                      strokeOpacity: 0.8,
+                      strokeWeight: 2,
+                      fillColor: '#FF0000',
+                      fillOpacity: 0.35,
+                      map: map,
+                      center: place.geometry.location,
+                      radius: 1000,
+                    }));
+
+                    searched_location = place.geometry.location;
+
+                    console.log(searched_location);
+                    fAuth.onAuthStateChanged((user) => {
+                        if (user) {
+                            userID = user.uid;
+                            fStore.collection("User").get().then(function(querySnapshot){
+                                querySnapshot.forEach(function(doc){
+
+                                    user_around.push(doc.data());   
+
+                                });
+                            console.log(user_around)
+
+                            //Get searched location
+                                var searched_latt = searched_location.lat();
+                                var searched_long = searched_location.lng();
+                                console.log("Searched location", searched_latt, searched_long);
+
+                            var near_users = [];
+                            //Loop through every one in the map
+
+                            for (var i = 0; i < user_around.length; i++){
+                                //Get near by users
+                                var user_data = user_around[i];
+                                var latt = user_data.latitude;
+                                var lng = user_data.longitude;
+                                console.log(latt, lng);
+
+                                if (measure(searched_latt, searched_long, latt, lng) < 1000){
+                                    near_users.push(user_data);
+                                }
+                            }
+
+                            console.log(near_users)
+                            var infected_num = 0
+                            for (var i = 0; i<near_users.length; i++){
+                                var user_near = near_users[i];
+                                var lat = user_near.latitude;
+                                var lng = user_near.longitude;
+                                user_markers.push(new google.maps.Marker({
+                                  map: map,
+                                  title: "Nearby User",
+                                  position: {lat: lat, lng:lng}
+                                }));
+                            }
+
+                            if (near_users.length > 0){
+                                alert("Crowded place, you should not come here!")
+                            }
+                            });
+                        } else {
+                            console.log("Cannot get userid");
+                            alert("Please log in again");
+                            window.location.assign("SignInPage.html")
+                        }
+                    });
+
+                    if (place.geometry.viewport) {
+                      // Only geocodes have viewport.
+                      bounds.union(place.geometry.viewport);
+                    } else {
+                      bounds.extend(place.geometry.location);
+                    }
+                  });
+                  map.fitBounds(bounds);
+                });
+            }
+      </script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlfYmAu4aToK-LTSZlBCV2MnQCYohXn4Q&libraries=places&callback=initAutocomplete"
+         async defer></script>
+    </body>
+</html>

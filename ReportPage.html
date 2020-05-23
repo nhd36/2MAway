@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Sign Up Page</title>
+        <link rel="stylesheet" href="cssFiles/signin_up.css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat|Ubuntu" rel="stylesheet"> 
+    </head>
+    <body>
+        <section class="section_1">
+        <div>
+            <div class='navbar'>
+                <div class='logo'>
+                HACKAMAP |
+                </div>           
+                <div class='navbar-item'>
+                </div>
+            </div>
+        </div>
+        </section>
+        <section>
+            <div class="box">
+                <h1>Health Status</h1>
+                
+                    <input type="text" id="check_infected" name="infected_check" placeholder="Infected by Corona? (Yes/No)">
+                
+                
+                    <input type="submit" onclick="UpdateHealth();" value="Update">
+            
+                <div class="bottom-text">
+                    We ensure to secure your health as well as the public health
+                </div>
+            </div>
+            
+            <!-- The core Firebase JS SDK is always required and must be listed first -->
+            <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
+
+            <!-- TODO: Add SDKs for Firebase products that you want to use
+                 https://firebase.google.com/docs/web/setup#available-libraries -->
+            <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-analytics.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
+
+            <script>
+              // Your web app's Firebase configuration
+              var firebaseConfig = {
+                apiKey: "AIzaSyB694vlhD5k2WJ0Nequs30AAr2R9n8BRB8",
+                authDomain: "hackamap-7c8ee.firebaseapp.com",
+                databaseURL: "https://hackamap-7c8ee.firebaseio.com",
+                projectId: "hackamap-7c8ee",
+                storageBucket: "hackamap-7c8ee.appspot.com",
+                messagingSenderId: "483911421310",
+                appId: "1:483911421310:web:df3ea271a8a0f7ad6ab72f",
+                measurementId: "G-GBYD2X2JH9"
+              };
+              // Initialize Firebase
+              firebase.initializeApp(firebaseConfig);
+              firebase.analytics();
+                
+                const fAuth = firebase.auth();
+                const fStore = firebase.firestore();
+                var userID;
+                
+                firebase.auth().onAuthStateChanged((user) => {
+                    if (user) {
+                        console.log("Here is userID " + user.uid);
+                        userID = user.uid;
+                    } else {
+                        console.log("Cannot get userid");
+                        alert("Please log in again");
+                        window.location.assign("SignIn.html")
+                    }
+                });
+                
+                function UpdateHealth(){
+                    var user_contacts = [];
+                    console.log(user_contacts);
+                    var infected = document.getElementById('check_infected').value;
+                    const checked = infected.toLowerCase();
+                    alert(checked);
+                    fAuth.onAuthStateChanged(function(user){
+                        if (user){
+                            //alert("Successfully logged in!")
+                            userID = user.uid;
+                            console.log(userID);
+                            if (checked == "no"){
+                                fStore.collection("User").doc(userID).update({
+                                    infected: false
+                                })
+                                .then(function(){
+                                    //alert("Successfully update no");
+                                });
+                                
+                                fStore.collection("User").get().then(function(querySnapshot){
+                                    querySnapshot.forEach(function(doc){
+                                        user_contacts.push(doc.id);
+                                        console.log(doc.id);
+                                    });
+                                });
+                                
+                                alert(user_contacts);
+                                window.location.assign("MainPage.html");
+                            }
+                            else{
+                                fStore.collection("User").doc(userID).update({
+                                    infected: true
+                                })
+                                .then(function(){
+                                    //alert("Successfully update yes");
+                                    window.location.assign("MainPage.html");
+                                });
+                                
+                                /*fStore.collection("User").get().then(function(querySnapshot){
+                                    querySnapshot.forEach(function(doc){
+                                        if (doc.id != userID){
+                                            fStore.collection("User").doc(doc.id).collection("contact").get()
+                                                .then(function(Snapshot){
+                                                Snapshot.forEach(function(document){
+                                                    if (document.id == userID){
+                                                        fStore.collection("User").doc(doc.id).collection("contact").doc(userID).update({
+                                                            infected: false
+                                                        })
+                                                    }
+                                                })
+                                            });
+                                        }
+                                    })
+                                });*/
+                            }
+                            console.log(user_contacts);
+                        }
+                        else{
+                            alert("Cannot logged in");
+                        }
+                    });
+                }
+                
+            </script>
+        </section>
+    </body>
+</html>

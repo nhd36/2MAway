@@ -1,0 +1,234 @@
+body{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    font-family: montserrat;
+}
+
+.paragraph10{
+    margin-top: 60px;
+    color: black;
+    font-size: 30px;
+}
+
+.header1{
+    margin-top: 0px;
+    color:black;
+}
+
+section{
+    width: 100%;
+    height: 115vh;
+    color: #fff;
+    background: linear-gradient(-45deg,#ee7752,#e73c7e,#23A6D5,#23D5AB);
+    background-size: 400% 400%;
+    position: relative;
+    animation: change 10s ease-in-out infinite;
+}
+
+.navbar {
+    text-decoration: none;
+    font-family: montserrat;
+    font-size: 45px;
+    margin-left: 2%;
+    color: white;
+}
+
+.logo {
+    margin-bottom: 50px;
+    padding:0;
+    text-decoration: none;
+    font-family: montserrat;
+    font-size: 45px;
+    margin-left: 2%;
+    color: white;
+    text-align: center;
+}
+
+.navbar-item {
+    text-decoration: none;
+    font-family: montserrat;
+    font-size: 20px;
+    margin-left: 2%;
+    color: white;
+    padding:0;
+    margin-right: 20px;
+}
+
+.section_1{
+    width: 100%;
+    height: 10vh; 
+    color: #fff;
+    background: linear-gradient(-45deg,#ee7752,#e73c7e,#23A6D5,#23D5AB);
+    background-size: 400% 400%;
+    position: relative;
+    animation: change 10s ease-in-out infinite;
+}
+
+@keyframes change {
+    0%{
+        background-position: 0 50%;
+    }
+    50%{
+        background-position: 100% 50%;
+    }
+    100%{
+        background-position: 0 50%;
+    }
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-bottom: 63px;
+  }
+  
+  nav li {
+    display: inline-block;
+    margin-left: 70px;
+    position: relative;
+  }
+  
+  nav a {
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 14px;
+  }
+  
+  nav a:hover {
+    color: #000;
+  }
+  
+  nav a::before {
+    content: '';
+    display: block;
+    height: 5px;
+    background-color: #444;
+  
+    position: absolute;
+    top: 0;
+    width: 0%;
+  
+    transition: all ease-in-out 250ms;
+  }
+  
+  nav a:hover::before {
+    width: 100%;
+  }
+
+.box{
+    width: 300px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 60px;
+    padding-right: 60px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #ffffff;
+    text-align: center;
+}
+
+.box_1{
+    width: 500px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 60px;
+    padding-right: 60px;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #ffffff;
+    text-align: center;
+}
+
+.box h1{
+    color: black;
+    text-transform: uppercase;
+}
+
+.box input[type="text"],.box input[type="password"],.box input[type="email"]{
+    border-radius: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #ee7752;
+    padding: 14px 10px;
+    width: 200px;
+    outline: none;
+    color: black;
+    border-radius: 24px;
+    transition: 0.25s;
+}
+
+.box input[type="text"]:focus,.box input[type="password"]:focus,.box input[type="email"]:focus{
+    width: 280px;
+    border-color: #23A6D5;
+}
+
+.box input[type="submit"]{
+    border-radius: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #23A6D5;
+    padding: 14px 40px;
+    outline: none;
+    color: black;
+    border-radius: 24px;
+    transition: 0.25s;
+    cursor: pointer;
+}
+
+.box input[type="submit"]:hover{
+    background: #23A6D5;
+    color: white;
+}
+
+.box input[type="date"]{
+    border-radius: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #ee7752;
+    padding: 14px 10px;
+    width: 200px;
+    outline: none;
+    color: black;
+    border-radius: 24px;
+    transition: 0.25s;
+}
+
+.box input[type="date"]:focus {
+    width: 280px;
+    border-color: #23A6D5;
+}
+
+.bottom-text {
+    color: black;
+    margin-top: 60px;
+    text-align: center;
+    font-size: 13px;
+}
+@keyframes change {
+    0%{
+        background-position: 0 50%;
+    }
+    50%{
+        background-position: 100% 50%;
+    }
+    100%{
+        background-position: 0 50%;
+    }
+}
+
+.nav-bar {
+    background: black
+}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Sign Up Page</title>
+        <link rel="stylesheet" href="cssFiles/signin_up.css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat|Ubuntu" rel="stylesheet"> 
+    </head>
+    <body>
+        <section class="section_1">
+        <div>
+            <div class='navbar'>
+                <div class='logo'>
+                HACKAMAP |
+                </div>           
+                <div class='navbar-item'>
+                </div>
+            </div>
+        </div>
+        </section>
+        <section>
+            <div class="box">
+                <h1>Create an account</h1>
+                
+                    <input type="text" id="fname" name="fname" placeholder="First Name">
+                
+                    <input type="text" id="lname" name="lname" placeholder="Last Name">
+                
+                    <input type="email" id="email" name="email" placeholder="Email">
+               
+                    <input type="password" id="password" name="password" placeholder="Password">
+                
+                    <input type="text" id="address" name="address" placeholder="Address">
+                
+                    <input type="submit" onclick="SignUp();" value="Create">
+            
+                <div class="bottom-text">
+                    Already had an acount? <a href="SignIn.html">Log in</a>
+                </div>
+            </div>
+            
+            <!-- The core Firebase JS SDK is always required and must be listed first -->
+            <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
+
+            <!-- TODO: Add SDKs for Firebase products that you want to use
+                 https://firebase.google.com/docs/web/setup#available-libraries -->
+            <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-analytics.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
+
+            <script>
+              // Your web app's Firebase configuration
+              var firebaseConfig = {
+                apiKey: "AIzaSyB694vlhD5k2WJ0Nequs30AAr2R9n8BRB8",
+                authDomain: "hackamap-7c8ee.firebaseapp.com",
+                databaseURL: "https://hackamap-7c8ee.firebaseio.com",
+                projectId: "hackamap-7c8ee",
+                storageBucket: "hackamap-7c8ee.appspot.com",
+                messagingSenderId: "483911421310",
+                appId: "1:483911421310:web:df3ea271a8a0f7ad6ab72f",
+                measurementId: "G-GBYD2X2JH9"
+              };
+              // Initialize Firebase
+              firebase.initializeApp(firebaseConfig);
+              firebase.analytics();
+                
+                function SignUp(){
+                    const fAuth = firebase.auth();
+                    const fStore = firebase.firestore();
+                    const user_email = document.getElementById('email').value;
+                    const user_password = document.getElementById('password').value;
+                    const user_fname = document.getElementById('fname').value;
+                    const user_lname = document.getElementById('lname').value;
+                    const user_address = document.getElementById('address').value;
+
+                    console.log(user_email.length)
+                    if (user_email.includes("@") && (user_password.length!=0)){
+                        console.log("Successfully loaded");
+                        console.log(user_email + " + " + user_password)
+                        fAuth.createUserWithEmailAndPassword(user_email, user_password)
+                            .then(function(){
+                                const userID = fAuth.currentUser.uid;
+                                console.log("Here is the current user " + userID)
+                                fStore.collection("User").doc(userID).set({
+                                    email: user_email,
+                                    first_name: user_fname,
+                                    last_name: user_lname,
+                                    address: user_address,
+                                    userID: userID,
+                                    infected: false
+                                })
+                                .then(function(){
+                                    console.log("Document successfully written into Firebase!")
+                                    window.location.assign("ReportPage.html");
+                                })
+                                .catch(function(error){
+                                    console.log(error)
+                                });
+                            }).catch (function(error){
+                                console.log(error)
+                            });
+                    }
+                    else{
+                        alert("Enter a proper Email and Password!")
+                    }
+                }
+            </script>      
+        </section>
+    </body>
+</html>
