@@ -15,7 +15,7 @@
             <div class="box">
                 <h1 class="header1">Your Status</h1>
                 <br>
-                <p class="paragraph10" id="updateStatus">Your Status</p>
+                <p class="paragraph10" id="updateStatus">Your are safe. Please maintain this lifestyle</p>
                 <br>
                 <div class="bottom-text">
                     The test result is above. Proceed to Main Page
@@ -61,28 +61,17 @@
                         fStore.collection("User").doc(userID).collection("contact").get().then(function(querySnapshot) {
                             querySnapshot.forEach(function(doc) {
                                 if (doc.id != userID){
-                                    // doc.data() is never undefined for query doc snapshots
-                                    user_list.push(doc.data());
-                                }
-                            });
-                        })
-
-                        var infected_num = 0;
-                        for(var i = 0; i < user_list.length; i++){
-                            var user_data = user_list[i];
-                            var infected = user_data.infected;
-                            if (infected){
-                                infected_num = infected_num + 1;
-                            }
-                        }
-                        
-                        console.log(infected_num);
-                        if (infected_num == 0){
-                            document.getElementById("updateStatus").innerHTML = "You are safe. Keep healthy!"
-                        }
-                        else{
-                            document.getElementById("updateStatus").innerHTML = "You are exposed to one of the victims. Please contact the medical station."
-                        }
+                                  // doc.data() is never undefined for query doc snapshots
+                                        infected_status = doc.data().infected;
+                                        console.log(infected_status);
+                                        if (infected_status){
+                                            infected_num ++;
+                                            console.log(infected_num);
+                                            document.getElementById("updateStatus").innerHTML = "You came in contact with infected person. Please reach the health center as soon as possible."
+                                        }
+                                    }
+                                });
+                            });      
                     } else {
                         console.log("Cannot get userid");
                         alert("Please log in again");
