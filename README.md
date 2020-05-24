@@ -1,4 +1,4 @@
-<h1>2MAway (<a href="2maway.tech">Website</a>)</h1>
+<h1>2MAway</h1>
 <ol>
     <li><h3>What:</h3>
     <ul>
