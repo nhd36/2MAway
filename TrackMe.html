@@ -1,67 +1,123 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>My Map</title>
-    <meta name="viewport" content="initial-scale=1.0">
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="cssFiles/mainpages.css">
-    <title>Hackateam</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<html lang="en">
+<head>
+
+    <!-- <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>2MAway | Track Me</title>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1" media="(device-height: 568px)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="HandheldFriendly" content="True">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<!-- Style Sheets --> 
+<link rel="stylesheet" type="text/css" media="all" href="css/reset.css" />
+<link rel="stylesheet" type="text/css" media="all" href="css/trunk.css" />
+
+<!-- Scripts --> 
+<script type="text/javascript">
+	if (typeof jQuery == 'undefined')
+		document.write(unescape("%3Cscript src='js/jquery-1.9.js'" + 
+															"type='text/javascript'%3E%3C/script%3E"))
+</script>
+<script type="text/javascript" language="javascript" src="js/trunk.js"></script>
+    <!-- <link rel="stylesheet" href="mainpages.css"> -->
+
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"> -->
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
     <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> -->
     <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat|Ubuntu" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
-      
+    <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
     <style>
-        body{
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-            font-size: 1rem;
-            font-weight: 400;
-            line-height: 1.5;
-            color: #1a1a1a;
-            text-align: left;
-            height: 100%;
-            background-color: #fff;
+        #map {
+          position:relative;
+          height:100%;
+          margin-top: 0;
+
+      }
+
+      @media only screen and (min-width: 375px) and (max-width: 812px) {
+        #map {
+          margin-top: 60px;
+
         }
-          /* Always set the map height explicitly to define the size of the div
-           * element that contains the map. */
-          #map {
-            height: 90%;
-          }
-          /* Optional: Makes the sample page fill the window. */
-          html{
-            height: 100%;
-            line-height: 1.15;
-            font-family: sans-serif;
-          }
+
+      }
+      /* @media only screen and (min-width: 812px) {
+        .map {
+          margin-top:20px;
+        } */
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #description {
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+      }
+
+      #infowindow-content .title {
+        font-weight: bold;
+      }
+
+      #infowindow-content {
+        display: none;
+      }
+
+      #map #infowindow-content {
+        display: inline;
+      }
+
+      #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 20px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 01 10px 0 20px;
+        text-overflow: ellipsis;
+        width: 300px;
+        
+      }
+
+      #pac-input:focus {
+        border-color: #4d90fe;
+      }
+
+
+
+
     </style>
   </head>
-    <body>
-        <section>
-            <div>
-                <div class='navbar'>
-                    <div class='logo'>
-                    HACKAMAP |
-                    </div>           
-                    <div class='navbar-item'>
-                        <nav>
-                            <ul>
-                                <li><a href="MainPage.html">Home</a></li>
-                                <li><a href="ReportPage.html">Report Status</a></li>
-                                <li><a href="TrackMe.html">Track Me</a></li>
-                                <li><a href='map3.html'>Location Check</a></li>
-                                <li><a href="#" onclick="SignOut()">Sign Out</a></li> 
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </section>
+  <body>
+    <div class="container">
+
+      <header class="slide">     <!--	Add "slideRight" class to items that move right when viewing Nav Drawer  -->
+          <ul id="navToggle" class="burger slide">    <!--	Add "slideRight" class to items that move right when viewing Nav Drawer  -->
+              <li></li><li></li><li></li>
+          </ul>
+          <h1><a href="MainPage.html">2MAway</a></h1>
+      </header>
+  
+      <nav class="slide close">
+          <ul>
+              <li><a href="MainPage.html">Home</a></li>
+              <li><a href="ReportPage.html">Report Status</a></li>
+              <li><a href="TrackMe.html">Track Me</a></li>
+              <li><a href='TrackLocation.html'>Location Check</a></li>
+              <li><a href="SignIn.html" onclick="SignOut()">Sign Out</a></li>
+          </ul>
+      </nav>
+      </div>
 
         <div id="map" class="map"></div>
 
@@ -178,6 +234,8 @@
                                                     num_infected++;
                                                     alert("You have come to contact with Corona-19 patients. Please go to the nearest medical center!");
                                                 }
+                                            } else {
+                                                console.log("nothing happened");
                                             }
                                         }
                                     })

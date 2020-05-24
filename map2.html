@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>Hackateam</title>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1" media="(device-height: 568px)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="HandheldFriendly" content="True">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<!-- Style Sheets --> 
+<link rel="stylesheet" type="text/css" media="all" href="css/reset.css" />
+<link rel="stylesheet" type="text/css" media="all" href="css/trunk.css" />
+
+<!-- Scripts --> 
+<script type="text/javascript">
+	if (typeof jQuery == 'undefined')
+		document.write(unescape("%3Cscript src='js/jquery-1.9.js'" + 
+															"type='text/javascript'%3E%3C/script%3E"))
+</script>
+<script type="text/javascript" language="javascript" src="js/trunk.js"></script>
+    <!-- <link rel="stylesheet" href="mainpages.css"> -->
+
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"> -->
+    <!-- jQuery library -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+    <!-- Popper JS -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> -->
+    <!-- Latest compiled JavaScript -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Ubuntu" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+    <style>
+        a { color: #FFFFFF; } 
+    </style>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #description {
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+      }
+
+      #infowindow-content .title {
+        font-weight: bold;
+      }
+
+      #infowindow-content {
+        display: none;
+      }
+
+      #map #infowindow-content {
+        display: inline;
+      }
+
+      .pac-card {
+        margin: 10px 10px 0 0;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        background-color: #fff;
+        font-family: Roboto;
+      }
+
+      #pac-container {
+        padding-bottom: 12px;
+        margin-right: 12px;
+      }
+
+      .pac-controls {
+        display: inline-block;
+        padding: 5px 11px;
+      }
+
+      .pac-controls label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }
+
+      #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 400px;
+      }
+
+      #pac-input:focus {
+        border-color: #4d90fe;
+      }
+
+      #title {
+        color: #fff;
+        background-color: #4d90fe;
+        font-size: 25px;
+        font-weight: 500;
+        padding: 6px 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+
+      <header class="slide">     <!--	Add "slideRight" class to items that move right when viewing Nav Drawer  -->
+          <ul id="navToggle" class="burger slide">    <!--	Add "slideRight" class to items that move right when viewing Nav Drawer  -->
+              <li></li><li></li><li></li>
+          </ul>
+          <h1><a href="MainPage.html">HackAMap</a></h1>
+      </header>
+  
+      <nav class="slide close">
+          <ul>
+              <li><a href="MainPage.html">Home</a></li>
+              <li><a href="ReportPage.html">Report Status</a></li>
+              <li><a href="Map.html">Track Me</a></li>
+              <li><a href='map3.html'>Location Check</a></li>
+              <li><a href="login.html" onclick="SignOut()">Sign Out</a></li>
+          </ul>
+      </nav>
+    </div>
+    
+    <div class="pac-card" id="pac-card">
+      <div>
+        <div id="title">
+          Social Distancing Search
+        </div>
+        <div id="type-selector" class="pac-controls">
+          <input type="radio" name="type" id="changetype-all" checked="checked">
+          <label for="changetype-all">All</label>
+
+          <input type="radio" name="type" id="changetype-establishment">
+          <label for="changetype-establishment">Establishments</label>
+
+          <input type="radio" name="type" id="changetype-address">
+          <label for="changetype-address">Addresses</label>
+
+          <input type="radio" name="type" id="changetype-geocode">
+          <label for="changetype-geocode">Geocodes</label>
+        </div>
+        <div id="strict-bounds-selector" class="pac-controls">
+          <input type="checkbox" id="use-strict-bounds" value="">
+          <label for="use-strict-bounds">Strict Bounds</label>
+        </div>
+      </div>
+      <div id="pac-container">
+        <input id="pac-input" type="text"
+            placeholder="Enter a location">
+      </div>
+    </div>
+    <div id="map"></div>
+    <div id="infowindow-content">
+      <img src="" width="16" height="16" id="place-icon">
+      <span id="place-name"  class="title"></span><br>
+      <span id="place-address"></span>
+    </div>
+    <p id="msg"></p>
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-analytics.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-firestore.js"></script>
+
+    <script>
+          var firebaseConfig = {
+            apiKey: "AIzaSyBpjvRC9EGrbJkBv3UWt6AMhdogN38AKQc",
+            authDomain: "hackthemap-e1614.firebaseapp.com",
+            databaseURL: "https://hackthemap-e1614.firebaseio.com",
+            projectId: "hackthemap-e1614",
+            storageBucket: "hackthemap-e1614.appspot.com",
+            messagingSenderId: "789330500819",
+            appId: "1:789330500819:web:efd01b3404a9ad5ee68826",
+            measurementId: "G-TQ60F3VFN5"
+        };
+        // Initialize Firebase
+
+        
+        var app = firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        
+
+        
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                console.log("Here is userID " + user.uid);
+                userID = user.uid;
+            } else {
+                console.log("Cannot get userid");
+                alert("Please log in again");
+                window.location.assign("SignInPage.html")
+            }
+        });
+        function Report(){
+            window.location.assign("ReportPage.html");
+        }
+        
+        function TrackMe(){
+            window.location.assign("Map.html");
+        }
+        
+        function CheckLocation(){
+            window.location.assign("map3.html");
+        }
+        
+        function SignOut(){
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    console.log(user.uid);
+                    var userID = user.uid;
+                    
+                    firebase.auth().signOut().then(function(){
+                        firebase.firestore().collection("User").doc(userID).update({
+                            latitude: firebase.firestore.FieldValue.delete(),
+                            longitude: firebase.firestore.FieldValue.delete()
+                        })
+                        window.location.assign("SignInPage.html");
+                    })
+                } else {
+                    console.log("Cannot get userid")
+                }
+            });
+        }
+        
+        
+    </script>
+    <script src="script.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpjvRC9EGrbJkBv3UWt6AMhdogN38AKQc&libraries=places&callback=initMap"
+        async defer></script>
+  </body>
+</html>

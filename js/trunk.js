@@ -15,6 +15,7 @@ $(function() {
 
     function open() {
         $(items).removeClass('close').addClass('open');
+        document.getElementById("map").style.zIndex= -1;
     }
 
     function close() {

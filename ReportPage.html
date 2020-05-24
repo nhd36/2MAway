@@ -2,24 +2,18 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Update Health Page</title>
+        <title>2MAway | Report</title>
         <link rel="stylesheet" href="cssFiles/signin_up.css">
         <link href="https://fonts.googleapis.com/css?family=Montserrat|Ubuntu" rel="stylesheet"> 
     </head>
     <body>
-        <section class="section_1">
-        <div>
-            <div class='navbar'>
-                <div class='logo'>
-                HACKAMAP |
-                </div>           
-                <div class='navbar-item'>
-                </div>
-            </div>
-        </div>
-        </section>
         <section>
             <div class="box">
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
                 <h1>Health Status</h1>
                 
                     <input type="text" id="check_infected" name="infected_check" placeholder="Infected by Corona? (Yes/No)">
@@ -30,8 +24,11 @@
                 <div class="bottom-text">
                     We ensure to secure your health as well as the public health
                 </div>
-            </div>
-            
+                <br />
+                <br />
+                <br />
+                <br />
+        </section>
             <!-- The core Firebase JS SDK is always required and must be listed first -->
             <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
 
@@ -74,6 +71,7 @@
                 
                 function UpdateHealth(){
                     var user_contacts = [];
+                    var user_list = [];
                     console.log(user_contacts);
                     var infected = document.getElementById('check_infected').value;
                     const checked = infected.toLowerCase();
@@ -88,17 +86,25 @@
                                     infected: false
                                 })
                                 .then(function(){
-                                    alert("Successfully update no");
+                                    // alert("Successfully update no");
                                 });
                                 
                                 fStore.collection("User").get().then(function(querySnapshot){
                                     querySnapshot.forEach(function(doc){
                                         user_contacts.push(doc.id);
                                         console.log(doc.id);
+                                        fStore.collection("User").doc(doc.id).collection("contact").doc(userID).get()
+                                            .then((docSnapshot)=>{
+                                            if (docSnapshot.exists){
+                                                fStore.collection("User").doc(doc.id).collection("contact").doc(userID).update({
+                                                    infected: false
+                                                });
+                                            }
+                                            // alert("Reach here");
+                                            window.location.assign("ShowHealthRisk.html");
+                                        });
                                     });
                                 });
-                                
-                                alert("Here", user_contacts);
                                 
                             }
                             else{
@@ -106,32 +112,32 @@
                                     infected: true
                                 })
                                 .then(function(){
-                                    //alert("Successfully update yes");
+                                    // alert("Successfully update yes");
                                 });
                                 
-                                /*fStore.collection("User").get().then(function(querySnapshot){
+                                fStore.collection("User").get().then(function(querySnapshot){
                                     querySnapshot.forEach(function(doc){
-                                        if (doc.id != userID){
-                                            fStore.collection("User").doc(doc.id).collection("contact").get()
-                                                .then(function(Snapshot){
-                                                Snapshot.forEach(function(document){
-                                                    if (document.id == userID){
-                                                        fStore.collection("User").doc(doc.id).collection("contact").doc(userID).update({
-                                                            infected: false
-                                                        })
-                                                    }
-                                                })
-                                            });
-                                        }
-                                    })
-                                });*/
+                                        user_contacts.push(doc.id);
+                                        console.log(doc.id);
+                                        fStore.collection("User").doc(doc.id).collection("contact").doc(userID).get()
+                                            .then((docSnapshot)=>{
+                                            if (docSnapshot.exists){
+                                                fStore.collection("User").doc(doc.id).collection("contact").doc(userID).update({
+                                                    infected: true
+                                                });
+                                            }
+                                            // alert("Reach here");
+                                            window.location.assign("ShowHealthRisk.html");
+                                        });
+                                    });
+                                });
                             }
-                            console.log(user_contacts);
                         }
                         else{
                             alert("Cannot logged in");
                         }
                     });
+                    
                 }
                 
             </script>

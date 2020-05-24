@@ -4,7 +4,7 @@
 
     <!-- <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
-    <title>Hackateam</title>
+    <title>2MAway | Home Page</title>
 <meta charset="utf-8">
 <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1" media="(device-height: 568px)">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,8 +12,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
 <!-- Style Sheets --> 
-<link rel="stylesheet" type="text/css" media="all" href="cssFiles/reset.css" />
-<link rel="stylesheet" type="text/css" media="all" href="cssFiles/trunk.css" />
+<link rel="stylesheet" type="text/css" media="all" href="css/reset.css" />
+<link rel="stylesheet" type="text/css" media="all" href="css/trunk.css" />
 
 <!-- Scripts --> 
 <script type="text/javascript">
@@ -22,15 +22,6 @@
 															"type='text/javascript'%3E%3C/script%3E"))
 </script>
 <script type="text/javascript" language="javascript" src="js/trunk.js"></script>
-    <!-- <link rel="stylesheet" href="mainpages.css"> -->
-
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"> -->
-    <!-- jQuery library -->
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
-    <!-- Popper JS -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> -->
-    <!-- Latest compiled JavaScript -->
-    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat|Ubuntu" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
@@ -38,105 +29,134 @@
         a { color: #FFFFFF; } 
     </style>
 </head>
-    <body>
-        <div class="container">
+<body>
+    <div class="container">
 
-            <header class="slide">     <!--	Add "slideRight" class to items that move right when viewing Nav Drawer  -->
-                <ul id="navToggle" class="burger slide">    <!--	Add "slideRight" class to items that move right when viewing Nav Drawer  -->
-                    <li></li><li></li><li></li>
-                </ul>
-                <h1><a href="MainPage.html">HackAMap</a></h1>
-            </header>
+        <header class="slide">     <!--	Add "slideRight" class to items that move right when viewing Nav Drawer  -->
+            <ul id="navToggle" class="burger slide">    <!--	Add "slideRight" class to items that move right when viewing Nav Drawer  -->
+                <li></li><li></li><li></li>
+            </ul>
+            <h1><a href="MainPage.html">2MAway</a></h1>
+        </header>
+    
+        <nav class="slide close">
+            <ul>
+                <li><a href="MainPage.html">Home</a></li>
+                <li><a href="ReportPage.html">Report Status</a></li>
+                <li><a href="TrackMe.html">Track Me</a></li>
+                <li><a href='TrackLocation.html'>Location Check</a></li>
+                <li><a href="SignIn.html" onclick="SignOut()">Sign Out</a></li>
+            </ul>
+        </nav>
+        
+        <div class="content slide">     	<!--Add "slideRight" class to items that move right when viewing Nav Drawer -->
+            <ul class="responsive">
+                <li class="header-section">
+                    <img src="MainPage_Images/image_1.jpg" style="width:100%;">
+                    <p class="paragraph_1">
+                        <span class="span_2"></span>
+                    </p>
+                </li>
+                <li class="body-section">
+                    <img src="MainPage_Images/image_6.jpg" style="width:100%;">
+                    <p class="paragraph_1">
+                    <span class="span_5"></span>
+                    </p>
+                    <p class="paragraph_1">
 
-            <nav class="slide close">
-                <ul>
-                    <li><a href="MainPage.html">Home</a></li>
-                    <li><a href="ReportPage.html">Report Status</a></li>
-                    <li><a href="Map.html">Track Me</a></li>
-                    <li><a href='map3.html'>Location Check</a></li>
-                    <li><a href="#" onclick="SignOut()">Sign Out</a></li>
-                </ul>
-            </nav>
+                        <span class="span_4"></span>
+                        <input type="submit" class="btn2" onclick="Report()" style="margin-left: 25%;" value="Report Your Health Status">
+                    </p>
+                </li>
+                <li class="body-section">
+                    <img src="MainPage_Images/image_5.jpg" style="width:100%;">
+                    <p class="paragraph_1">
+                        <span class="span_3"></span>
+                        <input type="submit" class="btn" onclick="TrackMe()" style="margin-left: 25%;" value="Enable Tracking Location">
+                    </p>
+                </li>
+                <li class="body-section">
+                    <img src="MainPage_Images/image_4.gif" style="width:100%;">
+                    <p class="paragraph_1">
+                        <span class="span_6"></span>
+                        <input type="submit" class="btn3" onclick="CheckLocation()" style="margin-left: 25%;" value="Check Public Place">
+                    </p>
+                </li>
+                <li class="footer-section">
 
-            <div class="content slide">     	<!--Add "slideRight" class to items that move right when viewing Nav Drawer -->
-                <ul class="responsive">
-                    <li class="header-section">
-                        <img src="MainPage_Images/image_1.jpg" style="width:100%;">
-                        <p class="paragraph_1">
-                            <span class="span_2"></span>
-                        </p>
-                    </li>
-                    <li class="body-section">
-                        <img src="MainPage_Images/image_6.jpg" style="width:100%;">
-                        <p class="paragraph_1">
-                        <span class="span_5"></span>
-                        </p>
-                        <p class="paragraph_1">
-
-                            <span class="span_4"></span>
-                            <input type="submit" class="btn2" onclick="Report()" style="margin-left: 35%;" value="Report Your Health Status">
-                        </p>
-                    </li>
-                    <li class="body-section">
-                        <img src="MainPage_Images/image_5.jpg" style="width:100%;">
-                        <p class="paragraph_1">
-                            <span class="span_3"></span>
-                            <input type="submit" class="btn" onclick="TrackMe()" style="margin-left: 35%;" value="Enable Tracking Location">
-                        </p>
-                    </li>
-                    <li class="body-section">
-                        <img src="MainPage_Images/image_4.gif" style="width:100%;">
-                        <p class="paragraph_1">
-                            <span class="span_6"></span>
-                            <input type="submit" class="btn3" onclick="CheckLocation()" style="margin-left: 37%; margin-bottom: 10px;" value="Check Public Place">
-                        </p>
-                    </li>
-                    <li class="footer-section">
-                        <a href="http://www.roblukedesign.com/" class="logo"></a>
-                        <p>HackAMap | Founded 2020</p>
-                    </li>
-                </ul>
-            </div>
-
+					<p>2MAway | Founded 2020</p>
+                </li>
+            </ul>
         </div>
+        
+    </div>
+    
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-app.js"></script>
 
-        <!-- The core Firebase JS SDK is always required and must be listed first -->
-        <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
-
-        <!-- TODO: Add SDKs for Firebase products that you want to use
-             https://firebase.google.com/docs/web/setup#available-libraries -->
-        <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-analytics.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
-
-        <script>
-          // Your web app's Firebase configuration
-          var firebaseConfig = {
-            apiKey: "AIzaSyB694vlhD5k2WJ0Nequs30AAr2R9n8BRB8",
-            authDomain: "hackamap-7c8ee.firebaseapp.com",
-            databaseURL: "https://hackamap-7c8ee.firebaseio.com",
-            projectId: "hackamap-7c8ee",
-            storageBucket: "hackamap-7c8ee.appspot.com",
-            messagingSenderId: "483911421310",
-            appId: "1:483911421310:web:df3ea271a8a0f7ad6ab72f",
-            measurementId: "G-GBYD2X2JH9"
-          };
-          // Initialize Firebase
-          firebase.initializeApp(firebaseConfig);
-          firebase.analytics();
-            
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-analytics.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-firestore.js"></script>
+    
+    <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+                apiKey: "AIzaSyB694vlhD5k2WJ0Nequs30AAr2R9n8BRB8",
+                authDomain: "hackamap-7c8ee.firebaseapp.com",
+                databaseURL: "https://hackamap-7c8ee.firebaseio.com",
+                projectId: "hackamap-7c8ee",
+                storageBucket: "hackamap-7c8ee.appspot.com",
+                messagingSenderId: "483911421310",
+                appId: "1:483911421310:web:df3ea271a8a0f7ad6ab72f",
+                measurementId: "G-GBYD2X2JH9"
+              };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    
+    var userID;
+    firebase.auth().onAuthStateChanged((user) => {
+                    if (user) {
+                        console.log("Here is userID " + user.uid);
+                        userID = user.uid;
+                    } else {
+                        console.log("Cannot get userid");
+                        alert("Please log in again");
+                        window.location.assign("SignIn.html")
+                    }
+                });
+        function Report(){
+            window.location.assign("ReportPage.html");
+        }
+        
+        function TrackMe(){
+            window.location.assign("Map.html");
+        }
+        
+        function CheckLocation(){
+            window.location.assign("map3.html");
+        }
+        
+        function SignOut(){
             firebase.auth().onAuthStateChanged((user) => {
                 if (user) {
-                    console.log("Here is userID " + user.uid);
-                    userID = user.uid;
+                    console.log(user.uid);
+                    var userID = user.uid;
+                    
+                    firebase.auth().signOut().then(function(){
+                        firebase.firestore().collection("User").doc(userID).update({
+                            latitude: firebase.firestore.FieldValue.delete(),
+                            longitude: firebase.firestore.FieldValue.delete()
+                        })
+                        window.location.assign("SignIn.html");
+                    })
                 } else {
-                    console.log("Cannot get userid");
-                    alert("Please log in again");
-                    window.location.assign("SignIn.html")
+                    console.log("Cannot get userid")
                 }
             });
-            
-            
-        </script>
-    </body>
-</html>
+        }
+    </script>
+</body>

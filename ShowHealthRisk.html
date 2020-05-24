@@ -2,33 +2,26 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Sign Up Page</title>
+
+        <title>2MAway | Status</title>
+        <link rel="shortcut icon" href="MainPage_Images/2mAway-logos.jpeg" type="image/x-icon">
         <link rel="stylesheet" href="cssFiles/signin_up.css">
         <link href="https://fonts.googleapis.com/css?family=Montserrat|Ubuntu" rel="stylesheet"> 
+
     </head>
     <body>
-        <section class="section_1">
-        <div>
-            <div class='navbar'>
-                <div class='logo'>
-                HACKAMAP |
-                </div>           
-                <div class='navbar-item'>
-                </div>
-            </div>
-        </div>
-        </section>
+
         <section>
             <div class="box">
-                <h1>Health Status</h1>
-                
-                    <input type="text" id="check_infected" name="infected_check" placeholder="Infected by Corona? (Yes/No)">
-                
-                
-                    <input type="submit" onclick="UpdateHealth();" value="Update">
-            
+                <h1 class="header1">Your Status</h1>
+                <br>
+                <p class="paragraph10" id="updateStatus">Your Status</p>
+                <br>
                 <div class="bottom-text">
-                    Check your potential at <a href="SignIn.html">Health Status</a>
+                    The test result is above. Proceed to Main Page
+                    <br>
+                    <br>
+                    <a href="MainPage.html">Home Page</a>
                 </div>
             </div>
             
@@ -56,6 +49,46 @@
               // Initialize Firebase
               firebase.initializeApp(firebaseConfig);
               firebase.analytics();
+                
+                var userID;
+                firebase.auth().onAuthStateChanged((user) => {
+                    if (user) {
+                        console.log(user.uid);
+                        var userID = user.uid;
+                        var user_list = [];
+                        const fStore = firebase.firestore();
+                        
+                        fStore.collection("User").doc(userID).collection("contact").get().then(function(querySnapshot) {
+                            querySnapshot.forEach(function(doc) {
+                                if (doc.id != userID){
+                                    // doc.data() is never undefined for query doc snapshots
+                                    user_list.push(doc.data());
+                                }
+                            });
+                        })
+
+                        var infected_num = 0;
+                        for(var i = 0; i < user_list.length; i++){
+                            var user_data = user_list[i];
+                            var infected = user_data.infected;
+                            if (infected){
+                                infected_num = infected_num + 1;
+                            }
+                        }
+                        
+                        console.log(infected_num);
+                        if (infected_num == 0){
+                            document.getElementById("updateStatus").innerHTML = "You are safe. Keep healthy!"
+                        }
+                        else{
+                            document.getElementById("updateStatus").innerHTML = "You are exposed to one of the victims. Please contact the medical station."
+                        }
+                    } else {
+                        console.log("Cannot get userid");
+                        alert("Please log in again");
+                        window.location.assign("SignInPage.html")
+                    }
+                });
             </script>
         </section>
     </body>
